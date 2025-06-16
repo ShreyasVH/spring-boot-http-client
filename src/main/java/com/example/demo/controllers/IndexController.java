@@ -16,7 +16,7 @@ public class IndexController
     @GetMapping("/get")
     public String get()
     {
-        return this.apiService.get("https://localhost:9008/api?input=abc", new HashMap<String, String>(){
+        return this.apiService.get("https://cors.springboot.com/api?input=abc", new HashMap<String, String>(){
             {
                 put("a", "A");
             }
@@ -26,7 +26,7 @@ public class IndexController
     @GetMapping("/post")
     public String post()
     {
-        return this.apiService.post("https://localhost:9008/api", new HashMap<String, String>(){
+        return this.apiService.post("https://cors.springboot.com/api", new HashMap<String, String>(){
             {
                 put("a", "A");
             }
@@ -40,7 +40,7 @@ public class IndexController
     @GetMapping("/put")
     public String put()
     {
-        return this.apiService.put("https://localhost:9008/api", new HashMap<String, String>(){
+        return this.apiService.put("https://cors.springboot.com/api", new HashMap<String, String>(){
             {
                 put("a", "A");
             }
@@ -54,7 +54,7 @@ public class IndexController
     @GetMapping("/delete")
     public String delete()
     {
-        return this.apiService.delete("https://localhost:9008/api", new HashMap<String, String>(){
+        return this.apiService.delete("https://cors.springboot.com/api", new HashMap<String, String>(){
             {
                 put("a", "A");
             }
