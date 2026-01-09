@@ -1,7 +1,7 @@
 package utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 public class Utils
 {
@@ -16,7 +16,7 @@ public class Utils
     {
         try {
             return objMapper.writeValueAsString(from);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             return "";
         }
     }

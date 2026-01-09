@@ -1,75 +1,66 @@
 package com.example.demo.services.impl;
 
 import com.example.demo.services.ApiService;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.*;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import utils.Utils;
+import org.springframework.web.client.RestClient;
 
 import java.util.Map;
 
 @Service
-public class ApiServiceImpl implements ApiService
-{
-    private final RestTemplate restTemplate;
+public class ApiServiceImpl implements ApiService {
 
-    public ApiServiceImpl(RestTemplateBuilder restTemplateBuilder)
-    {
-        this.restTemplate = restTemplateBuilder.build();
+    private final RestClient restClient;
+
+    public ApiServiceImpl(RestClient.Builder restClientBuilder) {
+        this.restClient = restClientBuilder.build();
     }
 
-    public String get(String url, Map<String, String> additionalHeaders)
-    {
-        HttpHeaders headers = new HttpHeaders();
-        for(Map.Entry<String, String> entry: additionalHeaders.entrySet())
-        {
-            headers.add(entry.getKey(), entry.getValue());
-        }
-        HttpEntity<String> request = new HttpEntity<>("parameters", headers);
-
-        ResponseEntity<String> response = this.restTemplate.exchange(url, HttpMethod.GET, request, String.class);
-        return response.getBody();
+    @Override
+    public String get(String url, Map<String, String> additionalHeaders) {
+        return restClient
+                .get()
+                .uri(url)
+                .headers(headers -> headers.setAll(additionalHeaders))
+                .retrieve()
+                .body(String.class);
     }
 
-    public String post(String url, Object payload, Map<String, String> additionalHeaders)
-    {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        for(Map.Entry<String, String> entry: additionalHeaders.entrySet())
-        {
-            headers.add(entry.getKey(), entry.getValue());
-        }
-        HttpEntity<String> request = new HttpEntity<>(Utils.toJson(payload), headers);
-
-        ResponseEntity<String> response = this.restTemplate.exchange(url, HttpMethod.POST, request, String.class);
-        return response.getBody();
+    @Override
+    public String post(String url, Object payload, Map<String, String> additionalHeaders) {
+        return restClient
+                .post()
+                .uri(url)
+                .headers(headers -> {
+                    headers.setAll(additionalHeaders);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .body(payload)
+                .retrieve()
+                .body(String.class);
     }
 
-    public String put(String url, Object payload, Map<String, String> additionalHeaders)
-    {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        for(Map.Entry<String, String> entry: additionalHeaders.entrySet())
-        {
-            headers.add(entry.getKey(), entry.getValue());
-        }
-        HttpEntity<String> request = new HttpEntity<>(Utils.toJson(payload), headers);
-
-        ResponseEntity<String> response = this.restTemplate.exchange(url, HttpMethod.PUT, request, String.class);
-        return response.getBody();
+    @Override
+    public String put(String url, Object payload, Map<String, String> additionalHeaders) {
+        return restClient
+                .put()
+                .uri(url)
+                .headers(headers -> {
+                    headers.setAll(additionalHeaders);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .body(payload)
+                .retrieve()
+                .body(String.class);
     }
 
-    public String delete(String url, Map<String, String> additionalHeaders)
-    {
-        HttpHeaders headers = new HttpHeaders();
-        for(Map.Entry<String, String> entry: additionalHeaders.entrySet())
-        {
-            headers.add(entry.getKey(), entry.getValue());
-        }
-        HttpEntity<String> request = new HttpEntity<>("parameters", headers);
-
-        ResponseEntity<String> response = this.restTemplate.exchange(url, HttpMethod.DELETE, request, String.class);
-        return response.getBody();
+    @Override
+    public String delete(String url, Map<String, String> additionalHeaders) {
+        return restClient
+                .delete()
+                .uri(url)
+                .headers(headers -> headers.setAll(additionalHeaders))
+                .retrieve()
+                .body(String.class);
     }
 }
