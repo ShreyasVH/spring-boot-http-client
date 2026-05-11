@@ -1,0 +1,7 @@
+# maven 3.9.14 path
+export PATH=
+
+# java 25.0.2 path
+export PATH=
+
+export PORT=
